@@ -8,5 +8,4 @@ export interface IStudent
   specialty: string;
   group: string;
   module: string;
-  register: number;
 }

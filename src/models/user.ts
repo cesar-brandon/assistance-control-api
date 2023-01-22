@@ -1,13 +1,14 @@
 import { DataTypes } from "sequelize";
 import connection from "../config/connection";
-import { IStudent } from "../interfaces/student";
+import { IUser } from "../interfaces/user";
 
-const StudentModel = connection.define<IStudent>(
-  "student",
+const UserModel = connection.define<IUser>(
+  "user",
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
     },
     lastname: {
       type: DataTypes.STRING,
@@ -17,17 +18,25 @@ const StudentModel = connection.define<IStudent>(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    specialty: {
+    dni: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    group: {
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    password: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    module: {
-      type: DataTypes.STRING,
+    idUserType: {
+      type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    state: {
+      type: DataTypes.BOOLEAN,
     },
   },
   {
@@ -35,4 +44,4 @@ const StudentModel = connection.define<IStudent>(
   }
 );
 
-export default StudentModel;
+export default UserModel;

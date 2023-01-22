@@ -4,11 +4,12 @@ import {
   getStudents,
   putStudent,
 } from "../controllers/student";
+import { checkSession } from "../middlewares/session";
 
 const router = Router();
 
 // GET: /students
-router.get("/", getStudents);
+router.get("/", checkSession, getStudents);
 // GET: /students/:id
 router.get("/:id", getStudentById);
 // PUT: /students/:id
