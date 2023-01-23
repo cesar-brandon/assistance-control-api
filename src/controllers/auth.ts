@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { registerNewUser, loginUser } from "../services/auth";
 import { handleError } from "../utils/error.handle";
+import { verifyToken } from "../utils/jwt.handle";
 
 // controllers for auth
 
@@ -18,8 +19,10 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    const result = await loginUser({ email, password });
-    res.send(result);
+    const token = await loginUser({ email, password });
+    const isUser = verifyToken(token);
+    if (!isUser) return res.status(401).send("TOKEN_INVALID");
+    res.send(token);
   } catch (error) {
     handleError(res, "ERROR_LOGIN_USER", error);
   }

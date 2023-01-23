@@ -6,7 +6,7 @@ import { signToken } from "../utils/jwt.handle";
 
 export const registerNewUser = async (user: IUser): Promise<IUser | string> => {
   const checkIsUser = await UserModel.findOne({ where: { email: user.email } });
-  if (checkIsUser) return "USER_ALREADY_EXISTS";
+  if (checkIsUser) throw new Error("USER_ALREADY_EXISTS");
   const passwordHash = await encryptPassword(user.password);
   const registerUser = await UserModel.create({
     ...user,
@@ -18,13 +18,13 @@ export const registerNewUser = async (user: IUser): Promise<IUser | string> => {
 export const loginUser = async ({ email, password }: IAuth) => {
   const checkIsUser = await UserModel.findOne({ where: { email } });
 
-  if (!checkIsUser) return "NOT_FOUND_USER";
+  if (!checkIsUser) throw new Error("USER_NOT_FOUND");
 
   const passwordHash = checkIsUser.password;
 
   const isCorrectPassword = await verifyPassword(password, passwordHash);
 
-  if (!isCorrectPassword) return "INCORRECT_PASSWORD";
+  if (!isCorrectPassword) throw new Error("INCORRECT_PASSWORD");
 
   const token = signToken(checkIsUser.email);
 

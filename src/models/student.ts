@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import connection from "../config/connection";
 import { IStudent } from "../interfaces/student";
+import AssistanceModel from "./assistance";
 
 const StudentModel = connection.define<IStudent>(
   "student",
@@ -34,5 +35,9 @@ const StudentModel = connection.define<IStudent>(
     timestamps: false,
   }
 );
+
+StudentModel.hasMany(AssistanceModel, {
+  foreignKey: "idStudent",
+});
 
 export default StudentModel;

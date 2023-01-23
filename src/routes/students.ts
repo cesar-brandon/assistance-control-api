@@ -11,8 +11,8 @@ const router = Router();
 // GET: /students
 router.get("/", checkSession, getStudents);
 // GET: /students/:id
-router.get("/:id", getStudentById);
+router.get("/:id", checkSession, getStudentById);
 // PUT: /students/:id
-router.put("/:id", putStudent);
+router.put("/:id", checkSession, putStudent);
 
 export { router };

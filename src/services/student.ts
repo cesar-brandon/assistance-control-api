@@ -1,9 +1,18 @@
 import { IStudent } from "../interfaces/student";
+import AssistanceModel from "../models/assistance";
 import StudentModel from "../models/student";
 
 // list all students
 export const listStudents = async (): Promise<IStudent[]> => {
-  const students = await StudentModel.findAll();
+  const students = await StudentModel.findAll({
+    include: [
+      {
+        model: AssistanceModel,
+        limit: 1,
+        order: [["createdAt", "DESC"]],
+      },
+    ],
+  });
   return students;
 };
 
@@ -11,7 +20,7 @@ export const listStudents = async (): Promise<IStudent[]> => {
 export const listStudentById = async (id: number): Promise<IStudent> => {
   const student = await StudentModel.findByPk(id);
 
-  if (!student) throw new Error("Student not found");
+  if (!student) throw new Error("STUDENT_NOT_FOUND");
 
   return student;
 };
@@ -25,7 +34,7 @@ export const updateStudent = async (
     where: { id },
   });
 
-  if (!studentUpdated) throw new Error("Student not found");
+  if (!studentUpdated) throw new Error("STUDENT_NOT_UPDATED");
 
   return student;
 };
