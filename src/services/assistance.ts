@@ -1,5 +1,14 @@
-import { IAssistance } from "../interfaces/assistance";
 import AssistanceModel from "../models/assistance";
+
+// get all attendances by student
+export const listAttendancesByStudent = async (idStudent: string) => {
+  const attendances = await AssistanceModel.findAll({
+    where: {
+      idStudent,
+    },
+  });
+  return attendances;
+};
 
 // updated assistance status
 export const updateAssistanceStatus = async (

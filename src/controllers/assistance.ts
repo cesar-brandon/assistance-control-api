@@ -1,6 +1,20 @@
 import { Request, Response } from "express";
-import { updateAssistanceStatus } from "../services/assistance";
+import {
+  listAttendancesByStudent,
+  updateAssistanceStatus,
+} from "../services/assistance";
 import { handleError } from "../utils/error.handle";
+
+// get all attendances by student
+export const getAttendancesByStudent = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const attendances = await listAttendancesByStudent(id);
+    res.send(attendances);
+  } catch (error) {
+    handleError(res, "ERROR_GET_ATTENDANCES", error);
+  }
+};
 
 // put assistance by id
 export const putAssistance = async (req: Request, res: Response) => {
